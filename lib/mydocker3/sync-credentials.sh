@@ -1,15 +1,7 @@
 #!/usr/bin/bash
 
-
 set -Ceu
-
-# TODO
-#MYDOCKER3_PATH=${MYDOCKER3_PATH:-$HOME/.mydocker3}
-#MYDOCKER3_HOME=${MYDOCKER3_HOME:-$HOME}
-MYDOCKER3_PATH=${MYDOCKER3_PATH:-$HOME/mydocker3/.mydocker3}
-MYDOCKER3_HOME=${MYDOCKER3_HOME:-$HOME/mydocker3}
-#MYDOCKER3_PASSWORD=aa
-#export PACK_PASSWORD="$MYDOCKER3_PASSWORD"
+. $(dirname $0)/../../env.sh
 
 export MYDOCKER3_PATH
 export MYDOCKER3_HOME
@@ -34,6 +26,10 @@ function copy_credentials2_to_home() {
   copy overwrite-from-repo $MYDOCKER3_PATH/credentials2 $MYDOCKER3_HOME .pgpass
 }
 
+function copy_credentials1_to_credentials23() {
+  copy overwrite $MYDOCKER3_PATH/credentials1 $MYDOCKER3_PATH/credentials2 clone-private.sh
+  copy overwrite $MYDOCKER3_PATH/credentials1 $MYDOCKER3_PATH/credentials3 clone-private.sh
+}
 
 # credentialsディレクトリ
 # - credentials1: credentials.txt を外部から設置したときの
@@ -57,25 +53,20 @@ if [ -e $MYDOCKER3_PATH/credentials.txt ]; then
   fi
 fi
 
-if [ -e $MYDOCKER3_PATH/credentials.txt ] && [ ! -e $MYDOCKER3_PATH/credentials1 ]; then
-  if ! bash $MYDOCKER3_PATH/public/lib/common/unpack-secrets.sh $MYDOCKER3_PATH/credentials1 < $MYDOCKER3_PATH/credentials.txt; then
-    # 解凍失敗
-    rmdir --ignore-fail-on-non-empty $MYDOCKER3_PATH/credentials1
-    exit 1
-  fi
-fi
-
 if [ ! -e $MYDOCKER3_PATH/credentials2 ]; then
   mkdir $MYDOCKER3_PATH/credentials2
 fi
 
 # HOMEから credentials3 に反映
-if [ -e $MYDOCKER3_PATH/credentials1 ] && [ ! -e $MYDOCKER3_PATH/credentials3 ]; then
-  cp -r --preserve=mode,timestamp -f $MYDOCKER3_PATH/credentials1 $MYDOCKER3_PATH/credentials3
+if [ -e $MYDOCKER3_PATH/credentials1 ]; then
+  if [ ! -e $MYDOCKER3_PATH/credentials3 ]; then
+    cp -r --preserve=mode,timestamp -f $MYDOCKER3_PATH/credentials1 $MYDOCKER3_PATH/credentials3
+  fi
 elif [ ! -e $MYDOCKER3_PATH/credentials3 ]; then
   mkdir -p $MYDOCKER3_PATH/credentials3
 fi
 copy_home_to_credentials3
+copy_credentials1_to_credentials23
 
 if diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials3 >/dev/null; then
   # credentials2 と credentials3 が同じ場合
@@ -92,7 +83,7 @@ if diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials3 >/dev/null;
     # credentials2 と credentials1 に差異がある場合
 
     # credentials1 から credentials2 にコピー
-    rm -r $MYDOCKER3_PATH/credentials2
+    rm -rf $MYDOCKER3_PATH/credentials2
     cp -r --preserve=mode,timestamp -f $MYDOCKER3_PATH/credentials1 $MYDOCKER3_PATH/credentials2
 
     # credentials2 からHOMEに反映
@@ -112,12 +103,12 @@ else
     cat $MYDOCKER3_PATH/credentials.txt.new
 
     # credentials3 から credentials1,2 にコピー
-    rm -r $MYDOCKER3_PATH/credentials1
+    rm -rf $MYDOCKER3_PATH/credentials1
     cp -r --preserve=mode,timestamp -f $MYDOCKER3_PATH/credentials3 $MYDOCKER3_PATH/credentials1
-    rm -r $MYDOCKER3_PATH/credentials2
+    rm -rf $MYDOCKER3_PATH/credentials2
     cp -r --preserve=mode,timestamp -f $MYDOCKER3_PATH/credentials3 $MYDOCKER3_PATH/credentials2
 
-    cat $MYDOCKER3_PATH/credentials.tx.new | sha256sum | cut -b-64 >| $MYDOCKER3_PATH/credentials.hash.txt.new
+    cat $MYDOCKER3_PATH/credentials.txt.new | sha256sum | cut -b-64 >| $MYDOCKER3_PATH/credentials.hash.txt.new
     mv $MYDOCKER3_PATH/credentials.txt.new $MYDOCKER3_PATH/credentials.txt
     mv $MYDOCKER3_PATH/credentials.hash.txt.new $MYDOCKER3_PATH/credentials.hash.txt
 
@@ -125,7 +116,7 @@ else
     # 初回実行時
 
     # credentials1 から credentials2 にコピー
-    rm -r $MYDOCKER3_PATH/credentials2
+    rm -rf $MYDOCKER3_PATH/credentials2
     cp -r --preserve=mode,timestamp -f $MYDOCKER3_PATH/credentials1 $MYDOCKER3_PATH/credentials2
 
     # credentials2 からHOMEに反映
