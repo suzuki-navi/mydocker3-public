@@ -3,9 +3,6 @@
 set -Ceu
 . $(dirname $0)/../../env.sh
 
-export MYDOCKER3_PATH
-export MYDOCKER3_HOME
-
 function copy() {
   local cptype="$1"
   local src="$2"
@@ -46,7 +43,9 @@ if [ -e $MYDOCKER3_PATH/credentials.txt ]; then
 
     if ! bash $MYDOCKER3_PATH/public/lib/common/unpack-secrets.sh $MYDOCKER3_PATH/credentials1 < $MYDOCKER3_PATH/credentials.txt; then
       # 解凍失敗
-      rmdir --ignore-fail-on-non-empty $MYDOCKER3_PATH/credentials1
+      if [ -e $MYDOCKER3_PATH/credentials1 ]; then
+        rmdir --ignore-fail-on-non-empty $MYDOCKER3_PATH/credentials1
+      fi
       exit 1
     fi
     mv $MYDOCKER3_PATH/credentials.hash.txt.new $MYDOCKER3_PATH/credentials.hash.txt
@@ -99,7 +98,7 @@ else
     # credentials2 と credentials1 が同じ場合
 
     # credentials3 から credentials.txt を生成
-    bash $MYDOCKER3_PATH/public/lib/common/pack-secrets.sh $MYDOCKER3_PATH/credentials3 >| $MYDOCKER3_PATH/credentials.txt.new
+    bash $MYDOCKER3_PATH/public/lib/common/pack-secrets.sh -w 200 $MYDOCKER3_PATH/credentials3 >| $MYDOCKER3_PATH/credentials.txt.new
     cat $MYDOCKER3_PATH/credentials.txt.new
 
     # credentials3 から credentials1,2 にコピー
@@ -112,8 +111,9 @@ else
     mv $MYDOCKER3_PATH/credentials.txt.new $MYDOCKER3_PATH/credentials.txt
     mv $MYDOCKER3_PATH/credentials.hash.txt.new $MYDOCKER3_PATH/credentials.hash.txt
 
-  elif [ -z "$(ls -A $MYDOCKER3_PATH/credentials2)" ] && diff -r $MYDOCKER3_PATH/credentials3 $MYDOCKER3_PATH/credentials1 >/dev/null; then
-    # 初回実行時
+  elif diff -r $MYDOCKER3_PATH/credentials3 $MYDOCKER3_PATH/credentials1 >/dev/null; then
+    # 初回実行時など
+    # credentials3 と credentials1 が同じ場合
 
     # credentials1 から credentials2 にコピー
     rm -rf $MYDOCKER3_PATH/credentials2
@@ -129,10 +129,10 @@ else
     echo "Conflict!"
     echo
     echo diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials3
-    diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials3
+    diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials3 || true
     echo
     echo diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials1
-    diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials1
+    diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials1 || true
     exit 1
 
   fi
