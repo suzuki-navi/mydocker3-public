@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#if [ $# -le 0 ]; then
+#    ls -alF --color --time-style="+%Y-%m-%d %H:%M:%S" . | less -XFR
+#elif [ $# -le 1 ]; then
+#    ls -alF --color --time-style="+%Y-%m-%d %H:%M:%S" "$@" | less -XFR
+#else
+#    ls -alFd --color --time-style="+%Y-%m-%d %H:%M:%S" "$@" |  less -XFR
+#fi
+
+if type sless >/dev/null 2>&1; then
+    sless "$@"
+else
+    ls -alF --color --time-style="+%Y-%m-%d %H:%M:%S" "$@" | less -XFR
+fi
+

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#git status -s "$@" | grep -v -E -e '^\s*D\s+' | perl -nle '
+git status -s "$@" | perl -ne '
+  if (/^(\s*M\s+)(.+)$/) {
+    print "$1", `ls -al '\''$2'\''`
+  } elsif (/^(\s*\?\?\s+)(.+)$/) {
+    print "$1", `ls -al '\''$2'\''`
+  } else {
+    print;
+  }
+'
+

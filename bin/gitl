@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ -t 1 ]; then
+    if [ $# -gt 0 ]; then
+        git log --graph --date-order \
+            --pretty=format:"%Cgreen%ai %Cblue%an %Cgreen%h %Cblue%d %Creset%s" "$@"
+    else
+        git log --graph --date-order --branches --tags --remotes HEAD \
+            --pretty=format:"%Cgreen%ai %Cblue%an %Cgreen%h %Cblue%d %Creset%s"
+    fi
+else
+    if [ $# -gt 0 ]; then
+        git log --graph --date-order \
+            --pretty=format:"%ai %an %h %d %s" "$@"
+    else
+        git log --graph --date-order --branches --tags --remotes HEAD \
+            --pretty=format:"%ai %an %h %d %s"
+    fi
+fi
+

@@ -1,0 +1,92 @@
+#!/bin/sh
+
+set -Ceu
+
+# $ git config git config --global color.ui true
+# 
+# または
+# ~/.gitconfig に
+# 
+# [color]
+#         ui = true
+
+f1=
+f2=
+reverse=
+
+while [ $# -gt 0 ]; do
+    a=$1
+    shift
+    if [ "$a" = "-R" ]; then
+        reverse=1
+    elif [ -z "$f1" ]; then
+        f1=$a
+    elif [ -z "$f2" ]; then
+        f2=$a
+    fi
+done
+
+if [ -z "$f1" ]; then
+    echo "error" >&2
+    exit 1
+fi
+
+if [ -z "$f2" ]; then
+    echo "error" >&2
+    exit 1
+fi
+
+if [ -n "$reverse" ]; then
+    f3="$f1"
+    f1="$f2"
+    f2="$f3"
+fi
+
+opt_diff=
+#if [ -d "$f1" -a -d "$f2" ]; then
+#    opt_diff="$opt_diff -r"
+#fi
+
+
+tmp1=
+tmp2=
+
+ext1=${f1##*.}
+ext2=${f2##*.}
+if pip show openpyxl >/dev/null; then
+    if [ "$ext1" = xls -o "$ext1" = xlsx -o "$ext1" = xlsm ]; then
+        tmp1=$(mktemp)
+        python $HOME/.mydocker2/private/lib/xls2txt.py "$f1" >| $tmp1 2>/dev/null
+        f1=$tmp1
+    fi
+    if [ "$ext2" = xls -o "$ext2" = xlsx -o "$ext2" = xlsm ]; then
+        tmp2=$(mktemp)
+        python $HOME/.mydocker2/private/lib/xls2txt.py "$f2" >| $tmp2 2>/dev/null
+        f2=$tmp2
+    fi
+fi
+
+if [ -p "$f1" ]; then
+    tmp1=$(mktemp)
+    cat < "$f1" >| $tmp1
+    f1=$tmp1
+fi
+if [ -p "$f2" ]; then
+    tmp2=$(mktemp)
+    cat < "$f2" >| $tmp2
+    f2=$tmp2
+fi
+
+if [ -t 1 ]; then
+    git diff --no-index --color=always -U20 "$f1" "$f2"
+else
+    diff -u $opt_diff "$f1" "$f2"
+fi
+
+if [ -n "$tmp1" ]; then
+    rm $tmp1
+fi
+if [ -n "$tmp2" ]; then
+    rm $tmp2
+fi
+
