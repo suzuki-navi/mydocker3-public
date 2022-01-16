@@ -11,5 +11,9 @@ else
   )
 fi
 
-bash $HOME/.mydocker3/public/setup-packages.sh || echo "Failed: $HOME/.mydocker3/public/setup-packages.sh"
-bash $HOME/.mydocker3/public/setup-credentials.sh || echo "Failed: $HOME/.mydocker3/public/setup-credentials.sh"
+bash $HOME/.mydocker3/public/sync-packages.sh    || echo "Failed: $HOME/.mydocker3/public/sync-packages.sh"
+bash $HOME/.mydocker3/public/sync-credentials.sh || echo "Failed: $HOME/.mydocker3/public/sync-credentials.sh"
+
+if [ -e $MYDOCKER3_PATH/credentials1/clone-private.sh ] && [ ! -e $MYDOCKER3_PATH/private ]; then
+  bash $HOME/.mydocker3/credentials1/clone-private.sh
+fi

@@ -17,7 +17,7 @@ RUN apt install -y git
 RUN mkdir -p /opt/mydocker3
 #RUN git clone https://github.com/suzuki-navi/mydocker3-public.git /opt/mydocker3/public
 COPY var/public /opt/mydocker3/public
-RUN MYDOCKER3_PATH=/opt/mydocker3 bash /opt/mydocker3/public/setup-packages.sh
+RUN MYDOCKER3_PATH=/opt/mydocker3 bash /opt/mydocker3/public/sync-packages.sh
 
 COPY entrypoint.sh /opt/mydocker3/public/docker/entrypoint.sh
 COPY entrypoint2.sh /opt/mydocker3/public/docker/entrypoint2.sh

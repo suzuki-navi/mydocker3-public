@@ -1,7 +1,20 @@
 #!/usr/bin/bash
 
+# entrypoint2.sh から起動されるスクリプト
+
 set -Ceu
-. $(dirname $0)/../../env.sh
+. $(dirname $0)/env.sh
+
+if [ ! -e $MYDOCKER3_PATH/credentials.txt ]; then
+  if [ -e /opt/mydocker3/work/credentials.txt ]; then
+    cp /opt/mydocker3/work/credentials.txt $MYDOCKER3_PATH/credentials.txt
+  fi
+fi
+
+if [ ! -e $MYDOCKER3_PATH/credentials.txt ]; then
+  echo "Not found: $MYDOCKER3_PATH/credentials.txt"
+  exit 1
+fi
 
 function copy() {
   local cptype="$1"
