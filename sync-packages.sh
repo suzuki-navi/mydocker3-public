@@ -5,8 +5,16 @@
 cd $(dirname $0)
 . ./env.sh
 
-bash $MYDOCKER3_PATH/public/lib/common/sudowr.sh apt install -y curl unzip
-bash $MYDOCKER3_PATH/public/lib/common/sudowr.sh apt install -y git zsh
-#curl vim openssh-client ncat openssh-server
+if [ ! -e $HOME/nobackup/created-at ]; then
+  mkdir $HOME/nobackup
+  touch $HOME/nobackup/created-at
+fi
 
+if [ ! -e $HOME/bin ]; then
+  mkdir $HOME/bin
+fi
+
+bash packages/apt1.sh
 bash packages/awscli.sh
+bash packages/apt2.sh
+bash packages/python.sh
