@@ -9,7 +9,7 @@ if [ $? -ne 0 ] ; then
     exit 1
 elif [ $(git status -s | wc -l) = 0 ]; then
     if git pull --rebase </dev/null; then
-        if [ "$(git show -r origin/master | grep \"^commit\")" != "$(git show master | grep \"^commit\")" ]; then
+        if [ "$(git show -r origin/main | grep \"^commit\")" != "$(git show main | grep \"^commit\")" ]; then
             git push
             if [ $? -ne 0 ] ; then
                 exit 1

@@ -24,6 +24,12 @@ function copy() {
   bash $MYDOCKER3_PATH/public/lib/common/copy.sh "$cptype" "$src/$name" "$dst/$name"
 }
 
+function diffr() {
+  local target1="$1"
+  local target2="$2"
+  diff <(bash $MYDOCKER3_PATH/public/lib/common/toplain.sh $target1) <(bash $MYDOCKER3_PATH/public/lib/common/toplain.sh $target2) >/dev/null
+}
+
 function copy_home_to_credentials3() {
   copy overwrite-to-repo $MYDOCKER3_HOME $MYDOCKER3_PATH/credentials3 .aws
   copy overwrite-to-repo $MYDOCKER3_HOME $MYDOCKER3_PATH/credentials3 .ssh
@@ -36,10 +42,10 @@ function copy_credentials2_to_home() {
   copy overwrite-from-repo $MYDOCKER3_PATH/credentials2 $MYDOCKER3_HOME .pgpass
 }
 
-function copy_credentials1_to_credentials23() {
-  copy overwrite $MYDOCKER3_PATH/credentials1 $MYDOCKER3_PATH/credentials2 clone-private.sh
-  copy overwrite $MYDOCKER3_PATH/credentials1 $MYDOCKER3_PATH/credentials3 clone-private.sh
-}
+#function copy_credentials1_to_credentials23() {
+#  copy overwrite $MYDOCKER3_PATH/credentials1 $MYDOCKER3_PATH/credentials2 clone-private.sh
+#  copy overwrite $MYDOCKER3_PATH/credentials1 $MYDOCKER3_PATH/credentials3 clone-private.sh
+#}
 
 # credentialsディレクトリ
 # - credentials1: credentials.txt を外部から設置したときの
@@ -51,7 +57,7 @@ if [ -e $MYDOCKER3_PATH/credentials.txt ]; then
   if [ ! -e $MYDOCKER3_PATH/credentials.hash.txt ]; then
     touch $MYDOCKER3_PATH/credentials.hash.txt
   fi
-  if ! diff $MYDOCKER3_PATH/credentials.hash.txt $MYDOCKER3_PATH/credentials.hash.txt.new >/dev/null; then
+  if ! diffr $MYDOCKER3_PATH/credentials.hash.txt $MYDOCKER3_PATH/credentials.hash.txt.new >/dev/null; then
     # credentials.txt が更新されていた場合
 
     if ! bash $MYDOCKER3_PATH/public/lib/common/unpack-secrets.sh $MYDOCKER3_PATH/credentials1 < $MYDOCKER3_PATH/credentials.txt; then
@@ -78,12 +84,12 @@ elif [ ! -e $MYDOCKER3_PATH/credentials3 ]; then
   mkdir -p $MYDOCKER3_PATH/credentials3
 fi
 copy_home_to_credentials3
-copy_credentials1_to_credentials23
+#copy_credentials1_to_credentials23
 
-if diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials3 >/dev/null; then
+if diffr $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials3; then
   # credentials2 と credentials3 が同じ場合
 
-  if diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials1 >/dev/null; then
+  if diffr $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials1; then
     # credentials2 と credentials1 が同じ場合
     
     # HOME でファイルが消えた場合に備えて念のため
@@ -107,7 +113,7 @@ if diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials3 >/dev/null;
 else
   # credentials2 と credentials3 に差異がある場合
 
-  if diff -r $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials1 >/dev/null; then
+  if diffr $MYDOCKER3_PATH/credentials2 $MYDOCKER3_PATH/credentials1; then
     # credentials2 と credentials1 が同じ場合
 
     # credentials3 から credentials.txt を生成
@@ -123,10 +129,13 @@ else
     cat $MYDOCKER3_PATH/credentials.txt.new | sha256sum | cut -b-64 >| $MYDOCKER3_PATH/credentials.hash.txt.new
     mv $MYDOCKER3_PATH/credentials.txt.new $MYDOCKER3_PATH/credentials.txt
     mv $MYDOCKER3_PATH/credentials.hash.txt.new $MYDOCKER3_PATH/credentials.hash.txt
+    if [ -e /opt/mydocker3/work/credentials.txt ]; then
+      cp $MYDOCKER3_PATH/credentials.txt /opt/mydocker3/work/credentials.txt
+    fi
 
-  elif diff -r $MYDOCKER3_PATH/credentials3 $MYDOCKER3_PATH/credentials1 >/dev/null; then
-    # 初回実行時など
+  elif diffr $MYDOCKER3_PATH/credentials3 $MYDOCKER3_PATH/credentials1; then
     # credentials3 と credentials1 が同じ場合
+    # 初回実行時など
 
     # credentials1 から credentials2 にコピー
     rm -rf $MYDOCKER3_PATH/credentials2

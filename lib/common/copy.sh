@@ -10,6 +10,14 @@ set -Ceu
 # bash ./copy.sh known-hosts-from-repo $repo/.ssh/known_hosts $HOME/.ssh/known_hosts
 # bash ./copy.sh known-hosts-to-repo   $HOME/.ssh/known_hosts $repo/.ssh/known_hosts
 
+libpath=$(dirname $0)
+
+function diffr() {
+  local target1="$1"
+  local target2="$2"
+  diff <(bash $libpath/toplain.sh $target1) <(bash $libpath/toplain.sh $target2) >/dev/null
+}
+
 function copy() {
     local cptype="$1"
     local src="$2"
@@ -47,7 +55,7 @@ function copy() {
 
     [ ! -f "$src" ] && return 0
     [ ! -e "$src" ] && return 0
-    [ -e "$dst" ] && cmp -s $src $dst && return 0
+    [ -e "$dst" ] && diffr $src $dst && return 0
 
     if [ "$cptype" = overwrite ]; then
         copy_overwrite $src $dst
@@ -81,7 +89,9 @@ function copy_history_from_repo() {
     mkdir -p $(dirname "$dst")
     (
         cat $src
-        diff -u $src $dst | grep -a -e '^+' | grep -a -v -e '^+++' | cut -b2-
+        if [ -e $dst ]; then
+          diff -u $src $dst | grep -a -e '^+' | grep -a -v -e '^+++' | cut -b2-
+        fi
     ) >| $dst.merged
     mv $dst.merged $dst
 }
@@ -89,11 +99,12 @@ function copy_history_from_repo() {
 function copy_history_to_repo() {
     local src="$1"
     local dst="$2"
+    [ !-e $src ] && return
     echo $src -\> $dst
     mkdir -p $(dirname "$dst")
     (
-        cat $dst
-        diff -u $dst $src | grep -a -e '^+' | grep -a -v -e '^+++' | cut -b2-
+      cat $dst
+      diff -u $dst $src | grep -a -e '^+' | grep -a -v -e '^+++' | cut -b2-
     ) >| $dst.merged
     mv $dst.merged $dst
 }

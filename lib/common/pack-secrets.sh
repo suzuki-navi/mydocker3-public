@@ -58,13 +58,7 @@ fi
 
 tmp_hash=$(mktemp)
 
-(
-  cd $DIR
-  find . -type f | LC_ALL=C sort | while read path; do
-    echo $path
-    sed $path -e 's/^/ /g'
-  done | sha256sum | cut -b-64
-) >| $tmp_hash
+bash $(dirname $0)/toplain.sh $DIR | sha256sum | cut -b-64 >| $tmp_hash
 
 # -s が指定されていてそのハッシュファイルから変化がない場合はなにもせずに終了
 if [ -n "$HASH_SRC" ] && [ -e $HASH_SRC ] && cmp -s $HASH_SRC $tmp_hash; then

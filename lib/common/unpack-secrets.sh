@@ -84,12 +84,6 @@ fi
 
 # -d が指定されている場合はハッシュファイルを書き出す
 
-(
-  cd $DIR
-  find . -type f | LC_ALL=C sort | while read path; do
-    echo $path
-    sed $path -e 's/^/ /g'
-  done | sha256sum | cut -b-64
-) >| $HASH_DST
+bash $(dirname $0)/toplain.sh $DIR | sha256sum | cut -b-64 >| $HASH_DST
 
 ####################################################################################################

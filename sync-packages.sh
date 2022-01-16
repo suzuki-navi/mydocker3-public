@@ -5,8 +5,8 @@
 cd $(dirname $0)
 . ./env.sh
 
-bash $MYDOCKER3_PATH/public/lib/common/sudowr.sh apt install -y sudo curl unzip
-bash $MYDOCKER3_PATH/public/lib/common/sudowr.sh apt install -y zsh
+bash $MYDOCKER3_PATH/public/lib/common/sudowr.sh apt install -y curl unzip
+bash $MYDOCKER3_PATH/public/lib/common/sudowr.sh apt install -y git zsh
 #curl vim openssh-client ncat openssh-server
 
 bash packages/awscli.sh

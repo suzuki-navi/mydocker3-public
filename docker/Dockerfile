@@ -8,12 +8,6 @@ RUN apt install -y sudo
 RUN echo '%sudo ALL=NOPASSWD: ALL' >> /etc/sudoers
 RUN echo 'Set disable_coredump false' >> /etc/sudo.conf
 
-RUN apt install -y git
-#RUN apt install -y ncat
-#RUN apt install -y openssh-server
-#RUN service ssh start
-#RUN useradd -m -u 9801 --groups sudo mydocker
-
 RUN mkdir -p /opt/mydocker3
 #RUN git clone https://github.com/suzuki-navi/mydocker3-public.git /opt/mydocker3/public
 COPY var/public /opt/mydocker3/public
