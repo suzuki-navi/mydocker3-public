@@ -1,4 +1,6 @@
 
+# Dockerfile, sync-packages.sh から呼び出される
+
 set -Ceu
 . $(dirname $0)/../env.sh
 

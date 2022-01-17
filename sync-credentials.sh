@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 # entrypoint2.sh から起動されるスクリプト
+# setup.sh から起動されるスクリプト
 
 set -Ceu
 . $(dirname $0)/env.sh

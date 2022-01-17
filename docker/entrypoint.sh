@@ -27,6 +27,7 @@ export MYDOCKER3_HOME=${MYDOCKER3_HOME:-$HOME}
 su -P $LOCAL_USER -c "bash /opt/mydocker3/public/docker/entrypoint2.sh"
 
 if [ -e $HOME/.zshrc ] && [ -x /usr/bin/zsh ]; then
+  echo chsh --shell /usr/bin/zsh $LOCAL_USER
   chsh --shell /usr/bin/zsh $LOCAL_USER
 fi
 
