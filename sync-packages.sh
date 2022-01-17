@@ -31,4 +31,4 @@ bash packages/awscli.sh
 bash packages/apt2.sh
 bash packages/python.sh
 
-bash packages/docker.sh
+#bash packages/docker.sh
