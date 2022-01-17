@@ -27,4 +27,4 @@ RUN MYDOCKER3_PATH=/opt/mydocker3 bash /opt/mydocker3/public/packages/python.sh
 
 COPY entrypoint.sh /opt/mydocker3/public/docker/entrypoint.sh
 COPY entrypoint2.sh /opt/mydocker3/public/docker/entrypoint2.sh
-CMD ["bash", "/opt/mydocker3/public/docker/entrypoint.sh"]
+CMD ["bash", "/opt/mydocker3/public/docker/entrypoint-root.sh"]

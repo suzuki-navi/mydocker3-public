@@ -1,7 +1,7 @@
 
 # Dockerfile の RUN で起動されるスクリプト
-# entrypoint2.sh から起動されるスクリプト
-# setup.sh から起動されるスクリプト
+# entrypoint-user.sh から起動されるスクリプト
+# setup-instance.sh から起動されるスクリプト
 
 cd $(dirname $0)
 . ./env.sh
@@ -30,3 +30,5 @@ bash packages/apt1.sh
 bash packages/awscli.sh
 bash packages/apt2.sh
 bash packages/python.sh
+
+bash packages/docker.sh

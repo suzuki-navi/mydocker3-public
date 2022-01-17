@@ -2,8 +2,8 @@
 
 # EC2インスタンスまたはGCPのGCEインスタンスを直接セットアップしたい場合にこのスクリプトを実行する
 
-if [ ! -e $HOME/.mydocker3/credentials.txt ]; then
-  echo "Not Found: ~/.mydocker3/credentials.txt" >&2
+if [ ! -e $HOME/.credentials.txt ]; then
+  echo "Not Found: ~/.credentials.txt" >&2
   exit 1
 fi
 

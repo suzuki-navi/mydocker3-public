@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
-# entrypoint2.sh から起動されるスクリプト
-# setup.sh から起動されるスクリプト
+# entrypoint-user.sh から起動されるスクリプト
+# setup-instance.sh から起動されるスクリプト
 
 cd $(dirname $0)
 . ./env.sh

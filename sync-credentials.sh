@@ -1,16 +1,34 @@
 #!/usr/bin/bash
 
-# entrypoint2.sh から起動されるスクリプト
-# setup.sh から起動されるスクリプト
+# entrypoint-user.sh から起動されるスクリプト
+# setup-instance.sh から起動されるスクリプト
 
 set -Ceu
 . $(dirname $0)/env.sh
 
-if [ ! -e $MYDOCKER3_PATH/credentials.txt ]; then
-  if [ -e /opt/mydocker3/work/credentials.txt ]; then
-    cp /opt/mydocker3/work/credentials.txt $MYDOCKER3_PATH/credentials.txt
+function pull_credentials() {
+  if [ ! -e $MYDOCKER3_PATH/credentials.txt ]; then
+    if [ -e $HOME/.credentials.txt ]; then
+      cp $HOME/.credentials.txt $MYDOCKER3_PATH/credentials.txt
+    fi
   fi
-fi
+  if [ ! -e $MYDOCKER3_PATH/credentials.txt ]; then
+    if [ -e /opt/mydocker3/work/.credentials.txt ]; then
+      cp /opt/mydocker3/work/.credentials.txt $MYDOCKER3_PATH/credentials.txt
+    fi
+  fi
+}
+
+function push_credentials() {
+  if [ -e $HOME/.credentials.txt ]; then
+    cp $MYDOCKER3_PATH/credentials.txt $HOME/.credentials.txt
+  fi
+  if [ -e /opt/mydocker3/work/.credentials.txt ]; then
+    cp $MYDOCKER3_PATH/credentials.txt /opt/mydocker3/work/.credentials.txt
+  fi
+}
+
+pull_credentials
 
 if [ ! -e $MYDOCKER3_PATH/credentials.txt ]; then
   echo "Not found: $MYDOCKER3_PATH/credentials.txt"
@@ -130,9 +148,7 @@ else
     cat $MYDOCKER3_PATH/credentials.txt.new | sha256sum | cut -b-64 >| $MYDOCKER3_PATH/credentials.hash.txt.new
     mv $MYDOCKER3_PATH/credentials.txt.new $MYDOCKER3_PATH/credentials.txt
     mv $MYDOCKER3_PATH/credentials.hash.txt.new $MYDOCKER3_PATH/credentials.hash.txt
-    if [ -e /opt/mydocker3/work/credentials.txt ]; then
-      cp $MYDOCKER3_PATH/credentials.txt /opt/mydocker3/work/credentials.txt
-    fi
+    push_credentials
 
   elif diffr $MYDOCKER3_PATH/credentials3 $MYDOCKER3_PATH/credentials1; then
     # credentials3 と credentials1 が同じ場合

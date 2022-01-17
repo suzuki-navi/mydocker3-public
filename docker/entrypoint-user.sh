@@ -1,5 +1,5 @@
 
-# entrypoint.sh から起動されるスクリプト
+# entrypoint-root.sh から起動されるスクリプト
 
 if [ ! -e $HOME/.mydocker3/public ]; then
   mkdir -p $HOME/.mydocker3
