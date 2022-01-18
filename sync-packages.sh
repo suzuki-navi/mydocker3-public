@@ -30,5 +30,6 @@ bash packages/apt1.sh
 bash packages/awscli.sh
 bash packages/apt2.sh
 bash packages/python.sh
+bash packages/nodejs.sh
 
 #bash packages/docker.sh
