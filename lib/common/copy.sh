@@ -99,7 +99,7 @@ function copy_history_from_repo() {
 function copy_history_to_repo() {
     local src="$1"
     local dst="$2"
-    [ !-e $src ] && return
+    [ ! -e $src ] && return
     echo $src -\> $dst
     mkdir -p $(dirname "$dst")
     (

@@ -10,25 +10,25 @@ fi
 sudo apt update
 sudo apt upgrade -y
 
-if [ ! -e $HOME/.mydocker3/public ]; then
-  mkdir -p $HOME/.mydocker3
-  git clone https://github.com/suzuki-navi/mydocker3-public.git $HOME/.mydocker3/public
-else
+if [ -e $HOME/.mydocker3/public ]; then
   (
-    cd $HOME/.mydocker3
+    cd $HOME/.mydocker3/public
     git pull
   )
+else
+  mkdir -p $HOME/.mydocker3
+  git clone https://github.com/suzuki-navi/mydocker3-public.git $HOME/.mydocker3/public
 fi
 
 export MYDOCKER3_PATH=${MYDOCKER3_PATH:-$HOME/.mydocker3}
 export MYDOCKER3_HOME=${MYDOCKER3_HOME:-$HOME}
 
-bash $HOME/.mydocker3/public/sync-packages.sh    || echo "Failed: $HOME/.mydocker3/public/sync-packages.sh"
-bash $HOME/.mydocker3/public/sync-credentials.sh || echo "Failed: $HOME/.mydocker3/public/sync-credentials.sh"
+bash $HOME/.mydocker3/public/lib/mydocker3/sync-packages.sh    || echo "Failed: $HOME/.mydocker3/public/lib/mydocker3/sync-packages.sh"
+bash $HOME/.mydocker3/public/lib/mydocker3/sync-credentials.sh || echo "Failed: $HOME/.mydocker3/public/lib/mydocker3/sync-credentials.sh"
 
 if [ -e $HOME/.mydocker3/credentials1/clone-private.sh ] && [ ! -e $HOME/.mydocker3/private ]; then
   bash $HOME/.mydocker3/credentials1/clone-private.sh
-  bash $HOME/.mydocker3/public/sync-private.sh   || echo "Failed: $HOME/.mydocker3/public/sync-private.sh"
+  bash $HOME/.mydocker3/public/lib/mydocker3/sync-private.sh   || echo "Failed: $HOME/.mydocker3/public/lib/mydocker3/sync-private.sh"
 fi
 
 if [ -e $HOME/.zshrc ] && [ -x /usr/bin/zsh ]; then
@@ -36,3 +36,7 @@ if [ -e $HOME/.zshrc ] && [ -x /usr/bin/zsh ]; then
   sudo chsh --shell /usr/bin/zsh $USER
 fi
 
+if [ -z "$ZSH_VERSION" ]; then
+  echo 'Execute the following command for changing shell'
+  echo 'exec zsh'
+fi

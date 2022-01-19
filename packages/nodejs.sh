@@ -4,13 +4,28 @@
 set -Ceu
 . $(dirname $0)/../env.sh
 
-if [ $(id -u) -eq 0 ]; then
+callfrom="${1:-}"
+
+if [ "$callfrom" = "--from-dockerfile-1" ]; then
   # Dockerfileから起動の場合
 
   apt install -y nodejs npm
+
+  exit
+fi
+
+if [ "$callfrom" = "--from-dockerfile-2" ]; then
+  # Dockerfileから起動の場合
+
   npm install -g n
   n stable
   apt purge -y nodejs npm
+
+  exit
+fi
+
+if [ "$callfrom" = "--from-dockerfile-3" ]; then
+  # Dockerfileから起動の場合
 
   if [ -n "${HTTP_PROXY:-}" ]; then
     sudo npm -g config set       proxy $HTTP_PROXY
@@ -19,8 +34,20 @@ if [ $(id -u) -eq 0 ]; then
     sudo npm -g config set https-proxy $HTTPS_PROXY
   fi
 
+  exit
+fi
+
+if [ "$callfrom" = "--from-dockerfile-4" ]; then
+  # Dockerfileから起動の場合
+
   echo sudo npm install -g @vue/cli
   sudo npm install -g @vue/cli
+
+  exit
+fi
+
+if [ "$callfrom" = "--from-dockerfile-5" ]; then
+  # Dockerfileから起動の場合
 
   echo sudo npm install -g serverless
   sudo npm install -g serverless

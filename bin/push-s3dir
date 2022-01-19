@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -Ceu
+
+while [ "$#" != 0 ]; do
+    bash $HOME/.mydocker3/public/lib/common/push-s3dir.sh $1
+    shift
+done
+

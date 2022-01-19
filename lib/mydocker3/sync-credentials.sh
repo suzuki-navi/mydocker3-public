@@ -4,7 +4,8 @@
 # setup-instance.sh から起動されるスクリプト
 
 set -Ceu
-. $(dirname $0)/env.sh
+cd $(dirname $0)
+. ../../env.sh
 
 function pull_credentials() {
   if [ ! -e $MYDOCKER3_PATH/credentials.txt ]; then

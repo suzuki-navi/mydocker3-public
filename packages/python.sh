@@ -9,7 +9,9 @@ export PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
 version=3.9.6
 
-if [ $(id -u) -eq 0 ]; then
+callfrom="${1:-}"
+
+if [ "$callfrom" = "--from-dockerfile" ]; then
   # Dockerfileから起動の場合
 
   if [ ! -e $PYENV_ROOT ]; then
@@ -19,6 +21,12 @@ if [ $(id -u) -eq 0 ]; then
 
   echo pyenv install --skip-existing -v $version
   pyenv install --skip-existing -v $version
+
+  echo pyenv global $version
+  pyenv global $version
+
+  echo pip install --upgrade pip
+  pip install --upgrade pip
 
   exit
 fi
@@ -46,5 +54,3 @@ pyenv global $version
 echo pip install --upgrade pip
 pip install --upgrade pip
 
-echo pyenv global $version
-pyenv global $version

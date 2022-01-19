@@ -9,7 +9,7 @@ if which aws >/dev/null; then
 fi
 
 cd /tmp
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
+curl -Ssf "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
 unzip -q awscliv2.zip
 
 bash $MYDOCKER3_PATH/public/lib/common/sudowr.sh ./aws/install

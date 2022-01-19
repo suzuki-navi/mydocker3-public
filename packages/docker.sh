@@ -4,11 +4,14 @@ set -Ceu
 
 if [ -e /.dockerenv ]; then
     # in Docker
-    if ! which docker; then
+    if ! type docker >/dev/null; then
         if [ -e /var/run/docker.sock ]; then
             echo sudo apt install -y docker docker.io
             sudo apt install -y docker docker.io
             sudo chmod 666 /var/run/docker.sock
+        else
+            echo 'Not found: /var/run/docker.sock'
+            exit 1
         fi
     fi
 else

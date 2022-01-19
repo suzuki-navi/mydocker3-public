@@ -3,8 +3,9 @@
 # entrypoint-user.sh から起動されるスクリプト
 # setup-instance.sh から起動されるスクリプト
 
+set -Ceu
 cd $(dirname $0)
-. ./env.sh
+. ../../env.sh
 
 function copy() {
   local cptype="$1"
