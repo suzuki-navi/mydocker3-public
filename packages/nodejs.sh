@@ -12,6 +12,21 @@ if [ $(id -u) -eq 0 ]; then
   n stable
   apt purge -y nodejs npm
 
+  if [ -n "${HTTP_PROXY:-}" ]; then
+    sudo npm -g config set       proxy $HTTP_PROXY
+  fi
+  if [ -n "${HTTPS_PROXY:-}" ]; then
+    sudo npm -g config set https-proxy $HTTPS_PROXY
+  fi
+
+  echo sudo npm install -g @vue/cli
+  sudo npm install -g @vue/cli
+
+  echo sudo npm install -g serverless
+  sudo npm install -g serverless
+  sudo npm install -g serverless-step-functions
+  sudo npm install -g firebase-tools
+
   exit
 fi
 

@@ -13,4 +13,4 @@ cp -v  --preserve=mode,timestamp ../sync-packages.sh  var/public/sync-packages.s
 cp -rv --preserve=mode,timestamp ../packages          var/public/packages
 cp -rv --preserve=mode,timestamp ../lib               var/public/lib
 
-docker build -t mydocker3 .
+docker build --build-arg HTTP_PROXY=$HTTP_PROXY --build-arg HTTPS_PROXY=$HTTPS_PROXY --build-arg NO_PROXY=$NO_PROXY -t mydocker3 .
