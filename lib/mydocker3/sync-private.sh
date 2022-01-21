@@ -46,7 +46,7 @@ copy history-to-repo $MYDOCKER3_HOME $MYDOCKER3_PATH/private .zsh_history
 if [ -e $MYDOCKER3_HOME/.gitconfig ]; then (
   # autocommit
   cd $MYDOCKER3_PATH/private
-  bash $MYDOCKER3_PATH/public/lib/common/autocommit.sh "autocommit config $(hostname)"
+  bash $MYDOCKER3_PATH/public/lib/common/autocommit.sh "autocommit history $(hostname)"
 ); fi
 
 copy history-from-repo $MYDOCKER3_PATH/private $MYDOCKER3_HOME .zsh_history

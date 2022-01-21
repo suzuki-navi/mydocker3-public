@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -Ceu
+
+. $HOME/.mydocker3/private/s3-config.sh
+
+echo s3://$s3_archive_bucket/$s3_archive_prefix/
+aws s3 ls s3://$s3_archive_bucket/$s3_archive_prefix/
