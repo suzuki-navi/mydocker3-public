@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+bash $HOME/.mydocker3/public/lib/mydocker3/sync-public.sh
