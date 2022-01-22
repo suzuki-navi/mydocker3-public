@@ -37,6 +37,7 @@ if [ "$callfrom" = "--from-setup-instance" ] || [ "$callfrom" = "--from-entrypoi
   exit
 fi
 
+bash $MYDOCKER3_PATH/public/packages/tools.sh
 bash $MYDOCKER3_PATH/public/packages/nodejs.sh
 bash $MYDOCKER3_PATH/public/packages/docker.sh
 bash $MYDOCKER3_PATH/public/packages/java.sh

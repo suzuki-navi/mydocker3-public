@@ -44,6 +44,7 @@ copy overwrite           $MYDOCKER3_PATH/private $MYDOCKER3_HOME .tmux.conf
 ####################################################################################################
 
 copy history-to-repo $MYDOCKER3_HOME $MYDOCKER3_PATH/private .zsh_history
+copy history-to-repo $MYDOCKER3_HOME $MYDOCKER3_PATH/private .psql_history
 
 if [ -e $MYDOCKER3_HOME/.gitconfig ]; then (
   # autocommit
@@ -52,5 +53,6 @@ if [ -e $MYDOCKER3_HOME/.gitconfig ]; then (
 ); fi
 
 copy history-from-repo $MYDOCKER3_PATH/private $MYDOCKER3_HOME .zsh_history
+copy history-from-repo $MYDOCKER3_PATH/private $MYDOCKER3_HOME .psql_history
 
 ####################################################################################################
