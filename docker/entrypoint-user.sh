@@ -11,8 +11,8 @@ else
   )
 fi
 
-bash $HOME/.mydocker3/public/lib/mydocker3/sync-packages.sh    || echo "Failed: $HOME/.mydocker3/public/lib/mydocker3/sync-packages.sh"
-bash $HOME/.mydocker3/public/lib/mydocker3/sync-credentials.sh || echo "Failed: $HOME/.mydocker3/public/lib/mydocker3/sync-credentials.sh"
+bash $HOME/.mydocker3/public/lib/mydocker3/sync-packages.sh --from-entrypoint-user || echo "Failed: $HOME/.mydocker3/public/lib/mydocker3/sync-packages.sh"
+bash $HOME/.mydocker3/public/lib/mydocker3/sync-credentials.sh                     || echo "Failed: $HOME/.mydocker3/public/lib/mydocker3/sync-credentials.sh"
 
 if [ -e $HOME/.mydocker3/credentials1/clone-private.sh ] && [ ! -e $HOME/.mydocker3/private ]; then
   bash $HOME/.mydocker3/credentials1/clone-private.sh

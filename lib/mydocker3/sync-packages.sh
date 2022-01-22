@@ -1,11 +1,12 @@
 
-# Dockerfile の RUN で起動されるスクリプト
 # entrypoint-user.sh から起動されるスクリプト
 # setup-instance.sh から起動されるスクリプト
 
 set -Ceu
 cd $(dirname $0)
 . ../../env.sh
+
+callfrom="${1:-}"
 
 sudo touch /etc/sudoers.tmp
 if ! sudo cat /etc/sudoers | grep '%sudo ALL=NOPASSWD: ALL'; then
@@ -31,6 +32,13 @@ bash $MYDOCKER3_PATH/public/packages/apt1.sh
 bash $MYDOCKER3_PATH/public/packages/awscli.sh
 bash $MYDOCKER3_PATH/public/packages/apt2.sh
 bash $MYDOCKER3_PATH/public/packages/python.sh
-#bash $MYDOCKER3_PATH/public/packages/nodejs.sh
 
-#bash $MYDOCKER3_PATH/public/packages/docker.sh
+if [ "$callfrom" = "--from-setup-instance" ] || [ "$callfrom" = "--from-entrypoint-user" ]; then
+  exit
+fi
+
+bash $MYDOCKER3_PATH/public/packages/nodejs.sh
+bash $MYDOCKER3_PATH/public/packages/docker.sh
+bash $MYDOCKER3_PATH/public/packages/java.sh
+bash $MYDOCKER3_PATH/public/packages/scala.sh
+bash $MYDOCKER3_PATH/public/packages/sbt.sh

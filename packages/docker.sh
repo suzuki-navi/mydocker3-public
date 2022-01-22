@@ -18,5 +18,5 @@ else
     echo sudo apt install -y docker docker.io
     sudo apt install -y docker docker.io
     sudo addgroup $USER docker
-    echo 'tmuxごといったん終了して再接続が必要'
+    echo 'dockerを使用するにはtmuxごといったん終了して再接続が必要'
 fi
