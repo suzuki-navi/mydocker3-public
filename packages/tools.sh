@@ -1,6 +1,8 @@
 
 set -Ceu
 
+cd $HOME
+
 sudo apt install -y gcc g++ zip unzip rsync tree iputils-ping pv
 
 sudo apt install -y dnsutils
@@ -21,8 +23,8 @@ sudo apt install -y bsdmainutils
 # for column, hexdump
 
 #$HOME/.local/bin/pip install git+https://github.com/suzuki-navi/aws-glue-job-history
-#
-#$HOME/.local/bin/pip install git-remote-codecommit yq awscli awslogs
-## sudoを付けるとなぜかproxy環境で以下が必要になってしまう
-## --trusted-host files.pythonhosted.org
+
+pip install git-remote-codecommit yq awscli awslogs
+# sudoを付けるとなぜかproxy環境で以下が必要になってしまう
+# --trusted-host files.pythonhosted.org
 

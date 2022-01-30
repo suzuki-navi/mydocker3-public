@@ -43,3 +43,4 @@ bash $MYDOCKER3_PATH/public/packages/docker.sh
 bash $MYDOCKER3_PATH/public/packages/java.sh
 bash $MYDOCKER3_PATH/public/packages/scala.sh
 bash $MYDOCKER3_PATH/public/packages/sbt.sh
+bash $MYDOCKER3_PATH/public/packages/ruby.sh
