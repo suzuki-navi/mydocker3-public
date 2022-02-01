@@ -18,6 +18,7 @@ if [ -e $HOME/.mydocker3/public ]; then
 else
   mkdir -p $HOME/.mydocker3
   git clone https://github.com/suzuki-navi/mydocker3-public.git $HOME/.mydocker3/public
+  sed -i $HOME/.mydocker3/public/.git/config -e 's!https://github.com/suzuki-navi/mydocker3-public.git!git@github.com:suzuki-navi/mydocker3-public.git!g'
 fi
 
 export MYDOCKER3_PATH=${MYDOCKER3_PATH:-$HOME/.mydocker3}
