@@ -15,8 +15,12 @@ if [ -e /.dockerenv ]; then
         fi
     fi
 else
+    type docker >/dev/null
+    f=$?
     echo sudo apt install -y docker docker.io
     sudo apt install -y docker docker.io
     sudo addgroup $USER docker
-    echo 'dockerを使用するにはtmuxごといったん終了して再接続が必要'
+    if [ "$f" != 0 ]; then
+        echo 'dockerを使用するにはtmuxごといったん終了して再接続が必要'
+    fi
 fi
