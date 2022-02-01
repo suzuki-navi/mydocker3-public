@@ -22,7 +22,7 @@ sudo apt install -y bsdmainutils
 # https://qiita.com/suzuki-navi/items/d9228fc776a571ef16c9
 # for column, hexdump
 
-#$HOME/.local/bin/pip install git+https://github.com/suzuki-navi/aws-glue-job-history
+pip install git+https://github.com/suzuki-navi/aws-glue-job-history
 
 pip install git-remote-codecommit yq awscli awslogs
 # sudoを付けるとなぜかproxy環境で以下が必要になってしまう
