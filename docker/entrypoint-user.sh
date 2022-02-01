@@ -1,6 +1,8 @@
 
 # entrypoint-root.sh から起動されるスクリプト
 
+sudo apt update && sudo apt upgrade -y
+
 if [ ! -e $HOME/.mydocker3/public ]; then
   mkdir -p $HOME/.mydocker3
   git clone https://github.com/suzuki-navi/mydocker3-public.git $HOME/.mydocker3/public
