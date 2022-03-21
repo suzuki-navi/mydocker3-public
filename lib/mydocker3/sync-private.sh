@@ -25,6 +25,7 @@ copy overwrite-to-repo $MYDOCKER3_HOME $MYDOCKER3_PATH/private .ssh
 copy overwrite         $MYDOCKER3_HOME $MYDOCKER3_PATH/private .gitconfig
 copy overwrite-to-repo $MYDOCKER3_HOME $MYDOCKER3_PATH/private .aws
 copy overwrite         $MYDOCKER3_HOME $MYDOCKER3_PATH/private .tmux.conf
+copy overwrite         $MYDOCKER3_HOME $MYDOCKER3_PATH/private .emacs
 
 if [ -e $MYDOCKER3_HOME/.gitconfig ]; then (
   # autocommit
@@ -38,6 +39,7 @@ copy overwrite-from-repo $MYDOCKER3_PATH/private $MYDOCKER3_HOME .ssh
 copy overwrite           $MYDOCKER3_PATH/private $MYDOCKER3_HOME .gitconfig
 copy overwrite-from-repo $MYDOCKER3_PATH/private $MYDOCKER3_HOME .aws
 copy overwrite           $MYDOCKER3_PATH/private $MYDOCKER3_HOME .tmux.conf
+copy overwrite           $MYDOCKER3_PATH/private $MYDOCKER3_HOME .emacs
 
 ####################################################################################################
 # 履歴ファイル
