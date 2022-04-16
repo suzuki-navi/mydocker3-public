@@ -2,8 +2,27 @@
 
 set -Ceu
 
+mv=
+declare -a target=()
+
 while [ "$#" != 0 ]; do
-    bash $HOME/.mydocker3/public/lib/common/push-s3dir.sh $1
+    if [ "$1" = "--mv" ]; then
+        mv=1
+    else
+        bash $HOME/.mydocker3/public/lib/common/push-s3dir.sh $1
+        target+=($1)
+    fi
     shift
 done
+
+if [ -z "$mv" ]; then
+    exit 0
+fi
+
+suffix=$(date +%Y%m%d-%H%M%S)
+for ((i = 0; i < ${#target[@]}; i++)) {
+        t=${target[i]}
+        echo mv $HOME/$t $HOME/nobackup/$t.$suffix
+        mv $HOME/$t $HOME/nobackup/$t.$suffix
+}
 
