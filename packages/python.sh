@@ -54,3 +54,6 @@ pyenv global $version
 echo pip install --upgrade pip
 pip install --upgrade pip
 
+echo pip install pipenv
+pip install pipenv
+
