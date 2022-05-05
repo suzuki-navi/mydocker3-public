@@ -28,3 +28,5 @@ pip install git-remote-codecommit yq awscli awslogs
 # sudoを付けるとなぜかproxy環境で以下が必要になってしまう
 # --trusted-host files.pythonhosted.org
 
+sudo apt install -y emacs-nox
+
