@@ -24,6 +24,7 @@ export HOME=/home/$LOCAL_USER
 export MYDOCKER3_PATH=${MYDOCKER3_PATH:-$HOME/.mydocker3}
 export MYDOCKER3_HOME=${MYDOCKER3_HOME:-$HOME}
 
+chown $LOCAL_USER $HOME
 su -P $LOCAL_USER -c "bash /opt/mydocker3/public/docker/entrypoint-user.sh"
 
 if [ -e $HOME/.zshrc ] && [ -x /usr/bin/zsh ]; then
